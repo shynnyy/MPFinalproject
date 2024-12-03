@@ -119,11 +119,7 @@ class SignupState extends State<Signup> {
         backgroundColor: Colors.black,
         title: const Text(
           'Sign Up',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18, // Ukuran font lebih kecil
-            fontWeight: FontWeight.bold, // Membuat teks menjadi bold
-          ),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Container(
@@ -134,28 +130,20 @@ class SignupState extends State<Signup> {
           children: [
             TextField(
               controller: _fullNameController,
-              decoration: InputDecoration(
-                labelText: 'Enter your full name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration:
+                  const InputDecoration(labelText: 'Enter your full name'),
               onChanged: onChangedFullName,
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: _phoneNumberController,
-              decoration: InputDecoration(
-                labelText: 'Enter your phone number',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration:
+                  const InputDecoration(labelText: 'Enter your phone number'),
               onChanged: onChangedPhoneNumber,
             ),
-            const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: role.isEmpty ? null : role,
+            DropdownButton<String>(
+              value: role.isEmpty
+                  ? null
+                  : role, // Show null for empty initial value
               items: ['Student', 'Lecturer'].map((String role) {
                 return DropdownMenuItem<String>(
                   value: role,
@@ -163,69 +151,37 @@ class SignupState extends State<Signup> {
                 );
               }).toList(),
               onChanged: onChangedRole,
-              decoration: InputDecoration(
-                labelText: 'Select Role',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              hint: const Text('Select Role'),
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Enter your email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration: const InputDecoration(labelText: 'Enter your email'),
               onChanged: onChangedEmail,
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Enter your password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration:
+                  const InputDecoration(labelText: 'Enter your password'),
               onChanged: onChangedPassword,
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Confirm your password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration:
+                  const InputDecoration(labelText: 'Confirm your password'),
               onChanged: onChangedConfirmPassword,
             ),
-            const SizedBox(height: 10),
             TextField(
               controller: _IDController,
-              decoration: InputDecoration(
-                labelText: 'Enter your ID',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+              decoration: const InputDecoration(labelText: 'Enter your ID'),
               onChanged: onChangedID,
             ),
             if (role == 'Student') ...[
-              const SizedBox(height: 10),
               TextField(
                 controller: _batchController,
-                decoration: InputDecoration(
-                  labelText: 'Enter your batch',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+                decoration:
+                    const InputDecoration(labelText: 'Enter your batch'),
                 onChanged: onChangedBatch,
               ),
             ],
