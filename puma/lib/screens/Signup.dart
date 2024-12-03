@@ -5,10 +5,11 @@ import 'Signin.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
-  
+
   @override
   SignupState createState() => SignupState();
 }
+
 class SignupState extends State<Signup> {
   String email = '';
   String password = '';
@@ -22,10 +23,12 @@ class SignupState extends State<Signup> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _IDController = TextEditingController(); // Changed from _studentIdController
+  final TextEditingController _IDController =
+      TextEditingController(); // Changed from _studentIdController
   final TextEditingController _batchController = TextEditingController();
 
   Future<void> onPressedSignUp() async {
@@ -46,7 +49,8 @@ class SignupState extends State<Signup> {
     }
 
     if (!termsAccepted) {
-      const snackBar = SnackBar(content: Text('You must accept the terms and conditions.'));
+      const snackBar =
+          SnackBar(content: Text('You must accept the terms and conditions.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
@@ -112,62 +116,116 @@ class SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Sign Up',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18, // Ukuran font lebih kecil
+            fontWeight: FontWeight.bold, // Membuat teks menjadi bold
+          ),
+        ),
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.white,
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: _fullNameController,
-              decoration: const InputDecoration(labelText: 'Enter your full name'),
+              decoration: InputDecoration(
+                labelText: 'Enter your full name',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onChanged: onChangedFullName,
             ),
+            const SizedBox(height: 10),
             TextField(
               controller: _phoneNumberController,
-              decoration: const InputDecoration(labelText: 'Enter your phone number'),
+              decoration: InputDecoration(
+                labelText: 'Enter your phone number',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onChanged: onChangedPhoneNumber,
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: DropdownButton<String>(
-                value: role.isEmpty ? null : role, // Show null for empty initial value
-                items: ['Student', 'Lecturer'].map((String role) {
-                  return DropdownMenuItem<String>(
-                    value: role,
-                    child: Text(role),
-                  );
-                }).toList(),
-                onChanged: onChangedRole,
-                hint: Text('Select Role'), // Hint text when value is null
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: role.isEmpty ? null : role,
+              items: ['Student', 'Lecturer'].map((String role) {
+                return DropdownMenuItem<String>(
+                  value: role,
+                  child: Text(role),
+                );
+              }).toList(),
+              onChanged: onChangedRole,
+              decoration: InputDecoration(
+                labelText: 'Select Role',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
+            const SizedBox(height: 10),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Enter your email'),
+              decoration: InputDecoration(
+                labelText: 'Enter your email',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onChanged: onChangedEmail,
             ),
+            const SizedBox(height: 10),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: 'Enter your password'),
+              decoration: InputDecoration(
+                labelText: 'Enter your password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onChanged: onChangedPassword,
             ),
+            const SizedBox(height: 10),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: 'Confirm your password'),
+              decoration: InputDecoration(
+                labelText: 'Confirm your password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onChanged: onChangedConfirmPassword,
             ),
+            const SizedBox(height: 10),
             TextField(
-              controller: _IDController, // Changed from _studentIdController
-              decoration: const InputDecoration(labelText: 'Enter your ID'),
-              onChanged: onChangedID, // Changed from onChangedStudentId
+              controller: _IDController,
+              decoration: InputDecoration(
+                labelText: 'Enter your ID',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onChanged: onChangedID,
             ),
             if (role == 'Student') ...[
+              const SizedBox(height: 10),
               TextField(
                 controller: _batchController,
-                decoration: const InputDecoration(labelText: 'Enter your batch'),
+                decoration: InputDecoration(
+                  labelText: 'Enter your batch',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 onChanged: onChangedBatch,
               ),
             ],
@@ -177,27 +235,34 @@ class SignupState extends State<Signup> {
                   value: termsAccepted,
                   onChanged: onChangedTerms,
                 ),
-                const Text('I accept the terms and conditions')
+                const Text('I accept the terms and conditions'),
               ],
             ),
-            ElevatedButton(
-              onPressed: onPressedSignUp,
-              child: const Text('Sign Up'),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                ),
+                onPressed: onPressedSignUp,
+                child: const Text('Sign Up',
+                    style: TextStyle(color: Colors.white)),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignIn()),
-                );
-              },
-              child: const Text('Already have an account? Sign In'),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignIn()),
+                  );
+                },
+                child: const Text('Already have an account? Sign In'),
+              ),
             ),
             const Spacer(),
             const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('© 2024 YourAppName - All Rights Reserved'),
+            const Center(
+              child: Text('© 2024 PUMA IS by Avery - All Rights Reserved'),
             ),
           ],
         ),
