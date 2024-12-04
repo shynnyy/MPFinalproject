@@ -14,10 +14,8 @@ class SignIn extends StatefulWidget {
 class SignInState extends State<SignIn> {
   String email = '';
   String password = '';
-  bool _isPasswordVisible = false; // Password visibility flag
+  bool _isPasswordVisible = false;
   int loginAttempts = 0;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   void onChangedUsername(String value) {
     setState(() {
@@ -76,139 +74,179 @@ class SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Login',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'PUMA IS',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    'Sign in to continue',
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  const SizedBox(height: 32.0),
-                  Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: _emailController,
-                            style: const TextStyle(color: Colors.black),
-                            onChanged: onChangedUsername,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.email,
-                                  color: Colors.grey.shade700),
-                              labelText: 'Email',
-                              labelStyle:
-                                  TextStyle(color: Colors.grey.shade700),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          TextField(
-                            controller: _passwordController,
-                            obscureText:
-                                !_isPasswordVisible, // Toggle visibility
-                            style: const TextStyle(color: Colors.black),
-                            onChanged: onChangedPassword,
-                            decoration: InputDecoration(
-                              prefixIcon:
-                                  Icon(Icons.lock, color: Colors.grey.shade700),
-                              labelText: 'Password',
-                              labelStyle:
-                                  TextStyle(color: Colors.grey.shade700),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey.shade700,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible =
-                                        !_isPasswordVisible; // Toggle password visibility
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24.0),
-                          ElevatedButton(
-                            onPressed: onPressedSignIn,
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 24.0), // Panjang tombol
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                            ),
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                  fontSize: 16.0, color: Colors.white),
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          TextButton(
-                            onPressed: onPressedSignUp,
-                            child: const Text(
-                              'Don’t have an account? Sign Up',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Color(0xffB3C8CF),
+                Color(0xffFFE3E3),
+              ]),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 60.0, left: 22, right: 22),
+              child: Text(
+                'Stay Connected and Stay Informed!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color.fromRGBO(255, 255, 255, 0.7),
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
+                color: Colors.white,
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: SingleChildScrollView(
+                // Wrap content to prevent overflow
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Email Input Field with box
+                      TextField(
+                        onChanged: onChangedUsername,
+                        decoration: InputDecoration(
+                          suffixIcon: const Icon(
+                            Icons.email,
+                            color: Colors.grey,
+                          ),
+                          label: const Text(
+                            'Gmail',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffB3C8CF),
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              color: Color(0xffB3C8CF),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Password Input Field with box
+                      TextField(
+                        obscureText: !_isPasswordVisible,
+                        onChanged: onChangedPassword,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                          label: const Text(
+                            'Password',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffB3C8CF),
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              color: Color(0xffB3C8CF),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                          height:
+                              50), // Adjust the spacing above the button if needed
+                      GestureDetector(
+                        onTap: onPressedSignIn,
+                        child: Container(
+                          height: 45, // Reduced height
+                          width: 250, // Reduced width
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                20), // Smaller border radius
+                            gradient: const LinearGradient(colors: [
+                              Color(0xffB3C8CF),
+                              Color(0xffFFE3E3),
+                            ]),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'SIGN IN',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16, // Reduced font size
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Don't have an account?",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
+                          ),
+                          GestureDetector(
+                            onTap: onPressedSignUp,
+                            child: const Text(
+                              "Sign up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

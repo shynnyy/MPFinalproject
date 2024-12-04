@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:final_project/utils/firebase_auth_service.dart';
 import 'Signin.dart';
+
+// Centralized color structure
+class AppColors {
+  static const gradientStart = Color(0xffB3C8CF);
+  static const gradientEnd = Color(0xffFFE3E3);
+  static const textPrimary = Color(0xffB3C8CF);
+  static const textSecondary = Colors.grey;
+  static const buttonText = Colors.white;
+  static const textFieldBorder = Color(0xffB3C8CF);
+}
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -15,9 +23,8 @@ class SignupState extends State<Signup> {
   String password = '';
   String confirmPassword = '';
   String fullName = '';
-  String phoneNumber = '';
+  String ID = ''; // Changed from phoneNumber to ID
   String role = ''; // Default role is empty
-  String ID = ''; // Change from studentId to ID
   String batch = '';
   bool termsAccepted = false;
 
@@ -26,16 +33,13 @@ class SignupState extends State<Signup> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _IDController =
-      TextEditingController(); // Changed from _studentIdController
-  final TextEditingController _batchController = TextEditingController();
+  final TextEditingController _idController = TextEditingController(); // for ID
 
   Future<void> onPressedSignUp() async {
     if (email.isEmpty ||
         password.isEmpty ||
         fullName.isEmpty ||
-        phoneNumber.isEmpty ||
+        ID.isEmpty ||
         confirmPassword.isEmpty) {
       const snackBar = SnackBar(content: Text('Please fill in all fields.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -58,169 +62,205 @@ class SignupState extends State<Signup> {
     // Firebase or backend logic here
   }
 
-  void onChangedEmail(String value) {
-    setState(() {
-      email = value;
-    });
-  }
-
-  void onChangedPassword(String value) {
-    setState(() {
-      password = value;
-    });
-  }
-
-  void onChangedConfirmPassword(String value) {
-    setState(() {
-      confirmPassword = value;
-    });
-  }
-
-  void onChangedFullName(String value) {
-    setState(() {
-      fullName = value;
-    });
-  }
-
-  void onChangedPhoneNumber(String value) {
-    setState(() {
-      phoneNumber = value;
-    });
-  }
-
-  void onChangedRole(String? value) {
-    setState(() {
-      role = value ?? ''; // Default to empty if value is null
-    });
-  }
-
-  void onChangedID(String value) {
-    setState(() {
-      ID = value; // Change to ID
-    });
-  }
-
-  void onChangedBatch(String value) {
-    setState(() {
-      batch = value;
-    });
-  }
-
-  void onChangedTerms(bool? value) {
-    setState(() {
-      termsAccepted = value ?? false; // Default to 'false' if value is null
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'Sign Up',
-          style: TextStyle(color: Colors.white),
-        ),
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: [
+                AppColors.gradientStart,
+                AppColors.gradientEnd,
+              ]),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.only(top: 60.0, left: 22),
+              child: Text(
+                'Create Your\nAccount',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
+                color: Colors.white,
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _fullNameController,
+                        label: 'Full Name',
+                        onChanged: (value) => setState(() => fullName = value),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _idController,
+                        label: 'ID',
+                        onChanged: (value) => setState(() => ID = value),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _emailController,
+                        label: 'Email',
+                        onChanged: (value) => setState(() => email = value),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _passwordController,
+                        label: 'Password',
+                        obscureText: true,
+                        onChanged: (value) => setState(() => password = value),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: _confirmPasswordController,
+                        label: 'Confirm Password',
+                        obscureText: true,
+                        onChanged: (value) =>
+                            setState(() => confirmPassword = value),
+                      ),
+                      const SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Role',
+                          labelStyle: const TextStyle(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        value: role.isEmpty ? null : role,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            role = newValue!;
+                          });
+                        },
+                        items: ['Student', 'Lecturer']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 100),
+                          backgroundColor: Colors
+                              .transparent, // Make button background transparent for gradient
+                          foregroundColor: Colors
+                              .transparent, // Ensure it's transparent on tap
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffB3C8CF),
+                                Color(0xffFFE3E3),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'SIGN UP',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: AppColors.buttonText,
+                              ),
+                            ),
+                          ),
+                        ),
+                        onPressed: onPressedSignUp,
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account? ",
+                            style: TextStyle(color: AppColors.textSecondary),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SignIn()),
+                              );
+                            },
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      body: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _fullNameController,
-              decoration:
-                  const InputDecoration(labelText: 'Enter your full name'),
-              onChanged: onChangedFullName,
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required Function(String) onChanged,
+    bool obscureText = false,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.textFieldBorder),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            labelText: label,
+            labelStyle: const TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
             ),
-            TextField(
-              controller: _phoneNumberController,
-              decoration:
-                  const InputDecoration(labelText: 'Enter your phone number'),
-              onChanged: onChangedPhoneNumber,
-            ),
-            DropdownButton<String>(
-              value: role.isEmpty
-                  ? null
-                  : role, // Show null for empty initial value
-              items: ['Student', 'Lecturer'].map((String role) {
-                return DropdownMenuItem<String>(
-                  value: role,
-                  child: Text(role),
-                );
-              }).toList(),
-              onChanged: onChangedRole,
-              hint: const Text('Select Role'),
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Enter your email'),
-              onChanged: onChangedEmail,
-            ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: 'Enter your password'),
-              onChanged: onChangedPassword,
-            ),
-            TextField(
-              controller: _confirmPasswordController,
-              obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: 'Confirm your password'),
-              onChanged: onChangedConfirmPassword,
-            ),
-            TextField(
-              controller: _IDController,
-              decoration: const InputDecoration(labelText: 'Enter your ID'),
-              onChanged: onChangedID,
-            ),
-            if (role == 'Student') ...[
-              TextField(
-                controller: _batchController,
-                decoration:
-                    const InputDecoration(labelText: 'Enter your batch'),
-                onChanged: onChangedBatch,
-              ),
-            ],
-            Row(
-              children: [
-                Checkbox(
-                  value: termsAccepted,
-                  onChanged: onChangedTerms,
-                ),
-                const Text('I accept the terms and conditions'),
-              ],
-            ),
-            Center(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                ),
-                onPressed: onPressedSignUp,
-                child: const Text('Sign Up',
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignIn()),
-                  );
-                },
-                child: const Text('Already have an account? Sign In'),
-              ),
-            ),
-            const Spacer(),
-            const Divider(),
-            const Center(
-              child: Text('© 2024 PUMA IS by Avery - All Rights Reserved'),
-            ),
-          ],
+          ),
+          onChanged: onChanged,
         ),
       ),
     );
